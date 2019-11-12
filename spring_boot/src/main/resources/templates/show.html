@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<div>
+    <a id="users-add"  class="easyui-linkbutton" data-options="iconCls:'icon-add'">新增</a>
+
+</div>
+<table id="user-table"></table>
+<div id="user-div"></div>
+<script type="text/javascript">
+
+    function users(){
+        $('#user-table').datagrid({
+            url:'../query',
+            singleSelect:true,
+            checkOnSelect:false,
+            selectOnCheck:false,
+            queryParams: {
+
+            },
+            columns:[
+                [
+                {field:'check',checkbox:true},
+                {field:'userid',title:'编号',width:100},
+                {field:'uname',title:'名称',width:100},
+                {field:'tools',title:'操作',width:200,
+                    formatter:function(value,row,index){
+                        var str="<input type='button' value='删除'onClick='del("+row.userid+")'>";
+                        str+="<input type='button' onclick='chengeUserss("+row.userid+",\""+row.uname+"\")' value='设置角色'>";
+                        return str;
+                    }
+                }
+            ]
+            ]
+        });
+
+    }
+    function del(ids){
+        $.ajax({
+            url:"../del",
+            type:"post",
+            data:{ids:ids},
+            success:function(){
+                $.messager.alert("提示","删除成功!","info");
+                //刷新表格
+                $("#sers-table").datagrid("load");
+            }
+        })
+    }
+    function chengeUserss(uid,uname){
+        $('#user-div').dialog({
+            title: '设置'+uname+'的角色',
+            width: 400,
+            height: 200,
+            closed: false,
+            href: '../toUserRole?uid='+uid,
+            modal: true,
+            buttons:[{
+                text:'保存',
+                handler:function(){
+                    var rolrarr =$("[name='rids']:checked");
+
+                    var rids="";
+                    for (var i = 0; i < rolrarr.length; i++) {
+                        rids+=","+rolrarr[i].value;
+                    }
+                    rids=rids.substring(1);
+                    alert(rids)
+                    $.ajax({
+                        type:"post",
+                        url:"../UserRole",
+                        data:{uid:uid,rids:rids},
+                        success:function(data){
+                            if (data == 'suc') {
+                                $('#user-div').dialog("close")
+                                $.messager.show({
+                                    title:'新消息',
+                                    msg:'操作完成',
+                                    timeout:2000,
+                                    showType:'slide'
+                                });
+
+                            }
+                        }
+                    })
+                }
+            },{
+                text:'关闭',
+                handler:function(){
+                    $('#user-div').dialog("close")
+                }
+            }]
+
+        })
+    }
+    $(function(){
+
+        users();
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.mapper.CarMapper" >
+  <resultMap id="BaseResultMap" type="com.jk.model.Car" >
+    <id column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="cname" property="cname" jdbcType="VARCHAR" />
+    <result column="ctime" property="ctime" jdbcType="DATE" />
+    <result column="cprice" property="cprice" jdbcType="INTEGER" />
+    <result column="curl" property="curl" jdbcType="VARCHAR" />
+    <result column="ctype" property="ctype" jdbcType="VARCHAR" />
+  </resultMap>
+  <!--<select id="queryCarList" resultType="com.jk.model.Car">
+    SELECT  * FROM car;
+  </select>-->
+
+    <select id="queryCar" resultType="java.util.LinkedHashMap">
+    select
+     sum(cprice) y,
+     DATE_FORMAT(ctime,'%Y-%m') time
+     from car
+	 where Date(ctime) between '2019-01-01' and '2020-01-01'
+	 GROUP BY DATE_FORMAT(ctime,'%Y-%m')
+  </select>
+  <select id="queryCarAll" resultType="java.util.LinkedHashMap">
+
+SELECT DATE_FORMAT(ctime,'%Y-%u') as time,sum(cprice)  counts FROM car  GROUP BY  time
+  </select>
+<select id="querycar" resultType="java.util.LinkedHashMap">
+select sum(cprice) counts,cname from car GROUP BY cname
+</select>
+  <select id="queryri" resultType="java.util.LinkedHashMap">
+SELECT DATE_FORMAT(ctime,'%m-%d') as time,sum(cprice) counts FROM car GROUP BY  time
+  </select>
+
+ <!-- <sql id="Base_Column_List" >
+    cid, cname, ctime, cprice, curl, ctype
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from car
+    where cid = #{cid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from car
+    where cid = #{cid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jk.model.Car" >
+    insert into car (cid, cname, ctime, 
+      cprice, curl, ctype
+      )
+    values (#{cid,jdbcType=INTEGER}, #{cname,jdbcType=VARCHAR}, #{ctime,jdbcType=DATE}, 
+      #{cprice,jdbcType=INTEGER}, #{curl,jdbcType=VARCHAR}, #{ctype,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jk.model.Car" >
+    insert into car
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="cname != null" >
+        cname,
+      </if>
+      <if test="ctime != null" >
+        ctime,
+      </if>
+      <if test="cprice != null" >
+        cprice,
+      </if>
+      <if test="curl != null" >
+        curl,
+      </if>
+      <if test="ctype != null" >
+        ctype,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cid != null" >
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="cname != null" >
+        #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null" >
+        #{ctime,jdbcType=DATE},
+      </if>
+      <if test="cprice != null" >
+        #{cprice,jdbcType=INTEGER},
+      </if>
+      <if test="curl != null" >
+        #{curl,jdbcType=VARCHAR},
+      </if>
+      <if test="ctype != null" >
+        #{ctype,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jk.model.Car" >
+    update car
+    <set >
+      <if test="cname != null" >
+        cname = #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null" >
+        ctime = #{ctime,jdbcType=DATE},
+      </if>
+      <if test="cprice != null" >
+        cprice = #{cprice,jdbcType=INTEGER},
+      </if>
+      <if test="curl != null" >
+        curl = #{curl,jdbcType=VARCHAR},
+      </if>
+      <if test="ctype != null" >
+        ctype = #{ctype,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jk.model.Car" >
+    update car
+    set cname = #{cname,jdbcType=VARCHAR},
+      ctime = #{ctime,jdbcType=DATE},
+      cprice = #{cprice,jdbcType=INTEGER},
+      curl = #{curl,jdbcType=VARCHAR},
+      ctype = #{ctype,jdbcType=VARCHAR}
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>-->
+</mapper>

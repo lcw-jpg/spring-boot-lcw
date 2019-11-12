@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+
+    <title>Title</title>
+
+</head>
+<body>
+<tr th:each="r:${roles}">
+    <td>
+        <input type="checkbox" th:checked="${r.status}" name="rids" th:value="${r.rid}">
+    </td>
+
+    <td th:text="${r.rname}"></td>
+</tr>
+
+</body>
+</html>

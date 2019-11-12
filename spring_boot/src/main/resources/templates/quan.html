@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <a id="menu-add"  class="easyui-linkbutton" data-options="iconCls:'icon-add'">新增</a>
+
+
+</div>
+<table id="menu-table"></table>
+<div id="menu-div"></div>
+<script type="text/javascript">
+
+    function menu(){
+        $('#menu-table').datagrid({
+            url:'../querymenu',
+            singleSelect:true,
+            checkOnSelect:false,
+            selectOnCheck:false,
+            columns:[
+                [
+                {field:'check',checkbox:true},
+                {field:'id',title:'ID',width:100},
+                {field:'text',title:'权限名称',width:100},
+                {field:'url',title:'URL路径',width:100},
+                {field:'tools',title:'操作',width:150,
+                    formatter:function(value,row,index){
+                        var str="<input type='button' value='删除'onClick='del("+row.id+")'>";
+                        str+="<input type='button' onclick='xg("+row.id+")' value='修改'/>";
+                        return str;
+                    }
+                },
+            ]
+            ]
+        });
+
+    }
+    function del(ids){
+        $.ajax({
+            url:"../dele",
+            type:"post",
+            data:{ids:ids},
+            success:function(){
+                $.messager.alert("提示","删除成功!","info");
+                //刷新表格
+                $("#menu-table").datagrid("load");
+            }
+        })
+    }
+    $(function(){
+        $("#menu-add").linkbutton({
+            onClick:function(){
+                $('#menu-div').dialog({
+                    title: '添加权限信息',
+                    width: 400,
+                    height: 300,
+                    href: '../addd',
+                    modal: false,
+                    buttons:[{
+                        text:'保存',
+                        handler:function(){
+                            $('#addform').form('submit', {
+                                url:"../add",
+                                onSubmit: function(){
+                                },
+                                success:function(data){
+                                    if(data>0){
+
+                                        $("#menu-table").datagrid("reload")
+                                        $('#menu-div').dialog('close');
+                                    }
+                                }
+                            });
+
+                        }
+                    },{
+                        text:'关闭',
+                        handler:function(){
+                            $('#menu-div').dialog('close')
+                        }
+                    }]
+                });
+            }
+        })
+
+
+    })
+
+    function xg(did){
+        $('#menu-div').dialog({
+            title: '修改',
+            width: 400,
+            height: 300,
+            closed: false,
+            cache: false,
+            href:"../xiu?id="+did,
+            modal: true,
+            buttons:[{
+                text:'保存',
+                handler:function(){
+                    $('#xg-form').form('submit', {
+                        url:"../update",
+                        onSubmit: function(){
+
+                        },
+                        success:function(data){
+                            if (data>0) {
+                                $("#menu-table").datagrid("reload")
+                                $('#menu-div').dialog('close');
+                            }
+                        }
+                    });
+                }
+            },{
+                text:'关闭',
+                handler:function(){
+                    $('#menu-div').dialog('close');
+                }
+            }]
+
+
+        });
+
+
+    }
+
+
+    $(function(){
+
+        menu();
+    })
+</script>
+</body>
+</html>

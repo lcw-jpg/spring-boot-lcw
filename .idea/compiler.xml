@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="springboot-dobbu" />
+        <module name="dubbo-api" />
+        <module name="springboot-solr" />
+        <module name="springboot-dobbu1" />
+        <module name="spring_boot" />
+        <module name="springboot-sheng" />
+        <module name="springboot-xiao" />
+        <module name="springboot-highcharts" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Dobbu-api" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="spring_boot" options="-parameters" />
+      <module name="springboot-dobbu" options="-parameters" />
+      <module name="springboot-dobbu1" options="-parameters" />
+      <module name="springboot-highcharts" options="-parameters" />
+      <module name="springboot-sheng" options="-parameters" />
+      <module name="springboot-solr" options="-parameters" />
+      <module name="springboot-xiao" options="-parameters" />
+    </option>
+  </component>
+</project>

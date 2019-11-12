@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.jk.model.User" >
+    <id column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="uname" property="uname" jdbcType="VARCHAR" />
+    <result column="pwd" property="pwd" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="query" resultType="com.jk.model.User" >
+  select * from t_user
+  </select>
+
+  <delete id="del">
+   delete from t_user where userid=#{ids}
+  </delete>
+
+  <delete id="deleteUserRole">
+  delete from t_zhong where zid =#{uid}
+  </delete>
+
+  <insert id="addUserRole">
+    insert into t_zhong(userid,rid) values
+    <foreach item="aa" index="index" collection="rids" separator=",">
+      (#{uid},${aa})
+    </foreach>
+  </insert>
+
+  <select id="queryUserName" resultMap="BaseResultMap">
+  select * from t_user where uname =#{un}
+  </select>
+
+  <!--<sql id="Base_Column_List" >
+    userId, uname, pwd
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    where userId = #{userid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user
+    where userId = #{userid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jk.model.User" >
+    insert into t_user (userId, uname, pwd
+      )
+    values (#{userid,jdbcType=INTEGER}, #{uname,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jk.model.User" >
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="uname != null" >
+        uname,
+      </if>
+      <if test="pwd != null" >
+        pwd,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="uname != null" >
+        #{uname,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null" >
+        #{pwd,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jk.model.User" >
+    update t_user
+    <set >
+      <if test="uname != null" >
+        uname = #{uname,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null" >
+        pwd = #{pwd,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jk.model.User" >
+    update t_user
+    set uname = #{uname,jdbcType=VARCHAR},
+      pwd = #{pwd,jdbcType=VARCHAR}
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>-->
+</mapper>

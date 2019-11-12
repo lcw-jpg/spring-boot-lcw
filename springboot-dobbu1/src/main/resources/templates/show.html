@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- jqeuy默认的css样式 -->
+    <link rel="stylesheet" type="text/css" href="../js/easyui/themes/default/easyui.css">
+
+    <link rel="stylesheet" type="text/css" href="../js/easyui/themes/icon.css">
+
+    <!-- 这是jquery的核心包  -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!-- 这是easyui的核心包  -->
+    <script type="text/javascript" src="../js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../js/easyui/locale/easyui-lang-zh_CN.js"></script>
+</head>
+<body>
+<div>
+    <a id="user-add"  class="easyui-linkbutton" data-options="iconCls:'icon-add'">新增</a>
+
+
+</div>
+<table id="user-table"></table>
+<div id="user-div"></div>
+<script type="text/javascript">
+
+    function users(){
+        $('#user-table').datagrid({
+            url:'../query',
+            singleSelect:true,
+            checkOnSelect:false,
+            selectOnCheck:false,
+            columns:[
+                [
+                    {field:'check',checkbox:true},
+                    {field:'userid',title:'编号',width:100},
+                    {field:'uname',title:'名称',width:100},
+                    {field:'avg',title:'年龄',width:100},
+                    {field:'sex',title:'性别',width:100,
+                        formatter:function(value,row,index){
+                          if (row.sex==1){
+                              return "男";
+                          }
+                            if (row.sex==2){
+                                return "女";
+                            }
+                        }
+                    },
+                    {field:'tools',title:'操作',width:200,
+                        formatter:function(value,row,index){
+                            var str="<input type='button' value='删除'onClick='del("+row.userid+")'>";
+                            str+="<input type='button' onclick='xg("+row.userid+")' value='修改'/>";
+                            return str;
+                        }
+
+                    },
+                ]
+            ]
+        });
+
+    }
+    function del(ids){
+        $.ajax({
+            url:"../del",
+            type:"post",
+            data:{ids:ids},
+            success:function(){
+                $.messager.alert("提示","删除成功!","info");
+                //刷新表格
+                $("#user-table").datagrid("load");
+            }
+        })
+    }
+    $(function(){
+        $("#user-add").linkbutton({
+            onClick:function(){
+                $('#user-div').dialog({
+                    title: '添加权限信息',
+                    width: 400,
+                    height: 300,
+                    href: '../addd',
+                    modal: false,
+                    buttons:[{
+                        text:'保存',
+                        handler:function(){
+                            $('#addform').form('submit', {
+                                url:"../add",
+                                onSubmit: function(){
+                                },
+                                success:function(data){
+                                    if(data>0){
+
+                                        $("#user-table").datagrid("reload")
+                                        $('#user-div').dialog('close');
+                                    }
+                                }
+                            });
+
+                        }
+                    },{
+                        text:'关闭',
+                        handler:function(){
+                            $('#user-div').dialog('close')
+                        }
+                    }]
+                });
+            }
+        })
+    })
+
+    function xg(did){
+        $('#user-div').dialog({
+            title: '修改',
+            width: 400,
+            height: 300,
+            closed: false,
+            cache: false,
+            href:"../xiu?id="+did,
+            modal: true,
+            buttons:[{
+                text:'保存',
+                handler:function(){
+                    $('#xg-form').form('submit', {
+                        url:"../update",
+                        onSubmit: function(){
+
+                        },
+                        success:function(data){
+                            if (data>0) {
+                                $("#user-table").datagrid("reload")
+                                $('#user-div').dialog('close');
+                            }
+                        }
+                    });
+                }
+            },{
+                text:'关闭',
+                handler:function(){
+                    $('#user-div').dialog('close');
+                }
+            }]
+
+
+        });
+
+
+    }
+
+    $(function(){
+
+        users();
+    })
+</script>
+</body>
+</html>
