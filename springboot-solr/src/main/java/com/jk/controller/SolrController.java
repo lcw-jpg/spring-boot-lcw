@@ -41,6 +41,8 @@ public class SolrController {
     @ResponseBody
     public Map<String, Object> search(Car car, Integer page, Integer rows){
 
+        System.out.println(1111);
+
         //返回到前台
         Map<String, Object> map1=new HashMap<>();
 
