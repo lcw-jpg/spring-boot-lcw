@@ -43,6 +43,8 @@ public class SolrController {
 
         System.out.println(1111);
 
+        System.out.println(2222);
+
         //返回到前台
         Map<String, Object> map1=new HashMap<>();
 
